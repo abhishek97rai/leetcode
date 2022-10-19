@@ -1,7 +1,7 @@
 class Solution {
     public String decodeString(String s) {
         int index = 0;
-        String res = "";
+        StringBuilder res = new StringBuilder("");
         Stack<Integer> countSt = new Stack<>();
         Stack<String> resultSt = new Stack<>();
         while (index < s.length()) {
@@ -14,23 +14,22 @@ class Solution {
                 }
                 countSt.push(count);                
             } else if (s.charAt(index) == '[') {
-                resultSt.push(res);
-                res = "";
+                resultSt.push(res.toString());
+                res = new StringBuilder("");
                 index++;
             } else if (s.charAt(index) == ']') {
-                String temp = resultSt.pop();
+                StringBuilder temp = new StringBuilder(resultSt.pop());
                 int repeat = countSt.pop();
-                for (int i = 0; i < repeat; i++) {
-                    temp = temp + res;
-                }
+                for (int i = 0; i < repeat; i++)
+                    temp.append(res);
                 res = temp;
                 index++;
             } else {
                 //normal character like a,b,c,etc
-                res = res + s.charAt(index);
+                res.append(s.charAt(index));
                 index++;
             }
         }
-        return res;
+        return res.toString();
     }
 }
