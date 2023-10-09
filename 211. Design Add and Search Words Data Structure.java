@@ -1,22 +1,30 @@
 class WordDictionary {
 
-    WordDictionary[] children;
-    boolean isEndOfWord;
+    class TrieNode {
+        TrieNode[] children;
+        boolean isEndOfWord;
+
+        TrieNode() {
+            children = new TrieNode[26];
+            isEndOfWord = false;
+            for (int i = 0; i < 26; i++) {
+                children[i] = null;
+            }
+        }
+    }
+
+    TrieNode root;
 
     public WordDictionary() {
-        children = new WordDictionary[26];
-        isEndOfWord = false;
-        for (int i = 0; i < 26; i++) {
-            children[i] = null;
-        }
+        root = new TrieNode();
     }
     
     public void addWord(String word) {
-        WordDictionary node = this;
+        TrieNode node = root;
         for (int i = 0; i < word.length(); i++) {
             int index = word.charAt(i) - 'a';
             if (node.children[index] == null) {
-                node.children[index] = new WordDictionary();
+                node.children[index] = new TrieNode();
             }
             node = node.children[index];
         }
@@ -24,13 +32,18 @@ class WordDictionary {
     }
     
     public boolean search(String word) {
-        WordDictionary node = this;
+        return recursiveSearch(word, root);
+        
+    }
+
+    public boolean recursiveSearch(String word, TrieNode currRoot) {
+        TrieNode node = currRoot;
         for (int i = 0; i < word.length(); i++) {
             if (word.charAt(i) == '.') {
-                for (WordDictionary nd: node.children) {
+                for (TrieNode nd: node.children) {
                     if (nd == null)
                         continue;
-                    if (nd.search(word.substring(i+1)))
+                    if (recursiveSearch(word.substring(i+1), nd))
                         return true;
                 }
                 return false;
