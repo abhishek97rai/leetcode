@@ -22,6 +22,6 @@ class Solution {
             }
         }
     }
-    return (tx == sx && ty == sy);
+    return false;
   }
 }
